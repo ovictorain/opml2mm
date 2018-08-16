@@ -20,7 +20,7 @@ public class Opml2MmFM {
 		String toFILE = "output.mm";
 
 		try {
-			Document document = Utils.parse(fromFILE);
+			Document document = Utils.parseWithFeedline(fromFILE);
 			Document opmlDocument = self.navigate(document);
 
 			Utils.write(opmlDocument, toFILE);
@@ -100,7 +100,12 @@ public class Opml2MmFM {
 		Element html = root.addElement("html");
 		Element head = html.addElement("head");
 		Element body = html.addElement("body");
-		Element p = body.addElement("p").addText(content);
+		
+		// 根据换行符 split 内容，每行对应一个 <p>
+		String[] lines = content.split(Utils.CUSTOM_FEEDLINE);
+		for (String line : lines) {
+			body.addElement("p").addText(line);
+		}
 
 		return root;
 	}
