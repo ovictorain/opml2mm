@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<opml version="1.0">
+  <head>
+    <title>FreeMind</title>
+  </head>
+  <body>
+    <outline text="Son1" _note="  First Son.">
+      <outline text="grandSon1" _note="  Im grand son 1
+  Hi, all."/>
+      <outline text="grandSon2"/>
+    </outline>
+    <outline text="Son2"/>
+    <outline text="Son3" _note="  No children"/>
+  </body>
+</opml>
