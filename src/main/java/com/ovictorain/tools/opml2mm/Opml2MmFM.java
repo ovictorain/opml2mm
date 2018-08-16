@@ -1,6 +1,5 @@
 package com.ovictorain.tools.opml2mm;
 
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Iterator;
 
@@ -8,46 +7,28 @@ import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
-import org.dom4j.io.OutputFormat;
-import org.dom4j.io.SAXReader;
-import org.dom4j.io.XMLWriter;
 
 /**
  * .opml to .mm (version 1.0.1, FreeMind)
  *
  */
 public class Opml2MmFM {
-	private final String DIRECTORY = "files/";
 
 	public static void main(String[] args) {
 		Opml2MmFM self = new Opml2MmFM();
 		String fromFILE = "testFM.opml";
+		String toFILE = "output.mm";
 
 		try {
-			Document document = self.parse(fromFILE);
+			Document document = Utils.parse(fromFILE);
 			Document opmlDocument = self.navigate(document);
 
-			self.write(opmlDocument);
+			Utils.write(opmlDocument, toFILE);
 		} catch (DocumentException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
-
-	/**
-	 * Read file to document
-	 * 
-	 * @param filename
-	 *            文件名称
-	 * @return
-	 * @throws DocumentException
-	 */
-	public Document parse(String filename) throws DocumentException {
-		SAXReader reader = new SAXReader();
-		Document document = reader.read(DIRECTORY + filename);
-
-		return document;
 	}
 
 	/**
@@ -68,7 +49,8 @@ public class Opml2MmFM {
 		nodeRoot.addAttribute("TEXT", rootName);
 
 		// iterate through child elements of the body's children.
-		// Can't use "nodeRoot.add(navigate(body));", because it'll create a empty <node>.
+		// Can't use "nodeRoot.add(navigate(body));", because it'll create a empty
+		// <node>.
 		for (Iterator<Element> it = body.elementIterator(); it.hasNext();) {
 			Element element = it.next();
 			nodeRoot.add(navigate(element));
@@ -103,27 +85,6 @@ public class Opml2MmFM {
 		}
 
 		return mmRoot;
-	}
-
-	/**
-	 * Write document to file
-	 * 
-	 * @param document
-	 * @throws IOException
-	 */
-	public void write(Document document) throws IOException {
-		try (FileWriter fileWriter = new FileWriter(DIRECTORY + "output.mm")) {
-			XMLWriter writer = new XMLWriter(fileWriter);
-
-			// Pretty print the document to file
-			OutputFormat format = OutputFormat.createPrettyPrint();
-
-			writer = new XMLWriter(System.out, format);
-			writer.write(document);
-			writer = new XMLWriter(fileWriter, format);
-			writer.write(document);
-			writer.close();
-		}
 	}
 
 	/**

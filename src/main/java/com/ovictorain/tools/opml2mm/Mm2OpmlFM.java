@@ -1,6 +1,5 @@
 package com.ovictorain.tools.opml2mm;
 
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Iterator;
 
@@ -8,45 +7,29 @@ import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
-import org.dom4j.io.OutputFormat;
-import org.dom4j.io.SAXReader;
-import org.dom4j.io.XMLWriter;
 
 /**
- * .opmll to .mm (version 1.0.1, FreeMind)
+ * .mm to .opml (version 1.0.1, FreeMind)
  *
  */
 public class Mm2OpmlFM {
-	private final String DIRECTORY = "files/";
 
 	public static void main(String[] args) {
 		Mm2OpmlFM self = new Mm2OpmlFM();
 		String fromFILE = "testFM.mm";
+		String toFILE = "output.opml";
 
 		try {
-			Document document = self.parse(fromFILE);
+			Document document = Utils.parse(fromFILE);
 
 			Document mmDocument = self.navigate(document);
 
-			self.write(mmDocument);
-		} catch (Exception e) {
+			Utils.write(mmDocument, toFILE);
+		} catch (DocumentException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
-
-	/**
-	 * Read file to document
-	 * 
-	 * @param filename
-	 *            文件名称
-	 * @return
-	 * @throws DocumentException
-	 */
-	public Document parse(String filename) throws DocumentException {
-		SAXReader reader = new SAXReader();
-		Document document = reader.read(DIRECTORY + filename);
-
-		return document;
 	}
 
 	/**
@@ -105,27 +88,6 @@ public class Mm2OpmlFM {
 		}
 
 		return opmlRoot;
-	}
-
-	/**
-	 * Write document to file
-	 * 
-	 * @param document
-	 * @throws IOException
-	 */
-	public void write(Document document) throws IOException {
-		try (FileWriter fileWriter = new FileWriter(DIRECTORY + "output.opml")) {
-			XMLWriter writer = new XMLWriter(fileWriter);
-
-			// Pretty print the document to file
-			OutputFormat format = OutputFormat.createPrettyPrint();
-
-			writer = new XMLWriter(System.out, format);
-			writer.write(document);
-			writer = new XMLWriter(fileWriter, format);
-			writer.write(document);
-			writer.close();
-		}
 	}
 
 	/**
