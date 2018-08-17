@@ -13,18 +13,18 @@ import org.dom4j.Element;
  *
  */
 public class Mm2OpmlFM {
+	String FName = "";
+	String MMSuffix = ".mm";
+	String OPMLSuffix = ".opml";
 
-	public static void main(String[] args) {
-		Mm2OpmlFM self = new Mm2OpmlFM();
-		String fromFILE = "testFM.mm";
-		String toFILE = "output.opml";
+	public void convert(String filename) {
+		this.FName = filename;
 
 		try {
-			Document document = Utils.parse(fromFILE);
+			Document document = Utils.parse(FName + MMSuffix);
+			Document mmDocument = navigate(document);
 
-			Document mmDocument = self.navigate(document);
-
-			Utils.write(mmDocument, toFILE);
+			Utils.write(mmDocument, FName + OPMLSuffix);
 		} catch (DocumentException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

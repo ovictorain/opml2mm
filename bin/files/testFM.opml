@@ -6,8 +6,7 @@
   </head>
   <body>
     <outline text="Son1" _note="  First Son.">
-      <outline text="grandSon1" _note="  Im grand son 1
-  Hi, all."/>
+      <outline text="grandSon1" _note="  Im grand son 1 Hi, all."/>
       <outline text="grandSon2"/>
     </outline>
     <outline text="Son2"/>

@@ -56,15 +56,16 @@ public class Utils {
 	 */
 	public static void write(Document document, String filename) throws IOException {
 		try (FileWriter fileWriter = new FileWriter(Utils.DIRECTORY + filename)) {
-			XMLWriter writer = new XMLWriter(fileWriter);
+			OutputFormat format = OutputFormat.createPrettyPrint();
+			XMLWriter writer = new XMLWriter(fileWriter, format);
 
 			// Pretty print the document to file
-			OutputFormat format = OutputFormat.createPrettyPrint();
+			writer.write(document);
 
-			writer = new XMLWriter(System.out, format);
-			writer.write(document);
-			writer = new XMLWriter(fileWriter, format);
-			writer.write(document);
+			// Pretty print the document to System.out
+			// writer = new XMLWriter(System.out, format);
+			// writer.write(document);
+
 			writer.close();
 		}
 	}
@@ -85,7 +86,7 @@ public class Utils {
 
 			// 读取数组中的内容
 			while ((length = reader.read(buffer)) != -1) {
-				boolean findLinefeed = false;
+				// boolean findLinefeed = false;
 				// mindly 的 attribute 将换行符输出为 "&#xA;"， 故可进行替换
 				// for (int i = 0; i < length - 3; i++) {
 				// if (buffer[i] == '&' && buffer[i + 1] == '#' && buffer[i + 2] == 'x' &&

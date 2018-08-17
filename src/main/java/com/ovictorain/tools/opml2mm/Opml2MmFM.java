@@ -13,17 +13,18 @@ import org.dom4j.Element;
  *
  */
 public class Opml2MmFM {
+	String FName = "";
+	String MMSuffix = ".mm";
+	String OPMLSuffix = ".opml";
 
-	public static void main(String[] args) {
-		Opml2MmFM self = new Opml2MmFM();
-		String fromFILE = "testFM.opml";
-		String toFILE = "output.mm";
+	public void convert(String filename) {
+		this.FName = filename;
 
 		try {
-			Document document = Utils.parseWithFeedline(fromFILE);
-			Document opmlDocument = self.navigate(document);
+			Document document = Utils.parseWithFeedline(FName + OPMLSuffix);
+			Document opmlDocument = navigate(document);
 
-			Utils.write(opmlDocument, toFILE);
+			Utils.write(opmlDocument, FName + MMSuffix);
 		} catch (DocumentException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -100,7 +101,7 @@ public class Opml2MmFM {
 		Element html = root.addElement("html");
 		Element head = html.addElement("head");
 		Element body = html.addElement("body");
-		
+
 		// 根据换行符 split 内容，每行对应一个 <p>
 		String[] lines = content.split(Utils.CUSTOM_FEEDLINE);
 		for (String line : lines) {
